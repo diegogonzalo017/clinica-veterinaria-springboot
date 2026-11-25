@@ -28,6 +28,12 @@ Para pararla: `docker compose down`.
 
 > Las credenciales de la base de datos (`root` / `1234`) son de desarrollo local.
 
+## Modelo de datos
+- Un **dueño** puede tener **varias mascotas**.
+- Cada **mascota** pertenece a **un solo dueño** (o a ninguno).
+
+La relación está implementada con `@ManyToOne` en la entidad `Mascota`, que guarda la clave foránea `id_dueño`. Es una relación unidireccional, lo que evita problemas de serialización JSON en bucle.
+
 ## Endpoints
 
 ### Dueños
@@ -43,56 +49,4 @@ Para pararla: `docker compose down`.
 | Método | Ruta | Qué hace |
 |--------|------|----------|
 | GET | `/traer/mascotas` | Lista todas las mascotas |
-| GET | `/traer/mascota/{id_mascota}` | Busca una mascota por id |
-| POST | `/crear/mascota` | Crea una mascota |
-| PUT | `/editar/mascota/{id_mascota}` | Edita una mascota |
-| DELETE | `/eliminar/mascota/{id_mascota}` | Elimina una mascota |
-
-## Ejemplos (JSON)
-
-Crear un dueño (`POST /crear/dueño`):
-```json
-{
-  "nombre": "Ana",
-  "apellido": "López",
-  "dni": "12345678A",
-  "celular": "600123456"
-}
-```
-
-Crear una mascota (`POST /crear/mascota`):
-```json
-{
-  "nombre": "Pekos",
-  "especie": "perro",
-  "raza": "maltés",
-  "color": "blanco"
-}
-```
-
-Asociar la mascota a un dueño (`PUT /editar/mascota/1`). Hay que enviar todos los campos:
-```json
-{
-  "nombre": "Pekos",
-  "especie": "perro",
-  "raza": "maltés",
-  "color": "blanco",
-  "dueño": { "id_dueño": 1 }
-}
-```
-
-## Estructura
-```
-├── docker-compose.yml        # app + MySQL
-└── clinicaVeterinaria/
-    ├── Dockerfile            # build en dos etapas (Maven -> JDK)
-    ├── pom.xml
-    └── src/main/java/.../
-        ├── controller/       # DueñoController, MascotaController
-        ├── service/
-        ├── repository/
-        └── model/            # Dueño, Mascota (relación uno a uno)
-```
-
-## Autor
-Diego García - [LinkedIn](https://www.linkedin.com/in/diego-garcia-80a6a4304/)
+| GET |
