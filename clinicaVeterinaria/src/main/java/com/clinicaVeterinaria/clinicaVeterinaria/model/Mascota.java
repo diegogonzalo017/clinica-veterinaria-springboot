@@ -16,7 +16,7 @@ public class Mascota {
     private String raza;
     private String color;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "id_dueño")
     private Dueño dueño;
 
